@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import math,string,itertools,fractions,heapq,collections,re,array,bisect
 
-class ApplesAndPears:
-    def getArea(self, board, K):
+class UniformBoard:
+    def getBoard(self, board, K):
         count = {}
         ss = "AP."
         height = len(board)
@@ -24,7 +24,6 @@ class ApplesAndPears:
 
         sumApples = rectangle('A', 0, 0, width, height)
         sumEmpties = rectangle('.', 0, 0, width, height)
-        sumPears = rectangle('P', 0, 0, width, height)
 
         res = 0
         # print(height + " x " + width)
@@ -34,19 +33,10 @@ class ApplesAndPears:
                     for x1 in xrange(x0 + 1, width + 1):
                         countEmpties = rectangle('.', x0, y0, x1, y1)
                         countPears = rectangle('P', x0, y0, x1, y1)
-                        countApples = rectangle('A', x0, y0, x1, y1)
                         rectangleArea = (y1 - y0) * (x1 - x0)
 
                         if (sumApples >= rectangleArea) and (countPears == 0 or sumEmpties > 0):
                             if countEmpties + 2 * countPears <= K:
-                                res = max(res, rectangleArea)
-
-                        if (sumPears >= rectangleArea) and (countApples == 0 or sumEmpties > 0):
-                            if countEmpties + 2 * countApples <= K:
-                                res = max(res, rectangleArea)
-
-                        if (countApples + countPears <= sumEmpties - countEmpties):
-                            if countApples + countPears <= K:
                                 res = max(res, rectangleArea)
 
         return res
@@ -81,10 +71,10 @@ def pretty_str(x):
 
 def do_test(board, K, __expected):
     startTime = time.time()
-    instance = ApplesAndPears()
+    instance = UniformBoard()
     exception = None
     try:
-        __result = instance.getArea(board, K);
+        __result = instance.getBoard(board, K);
     except:
         import traceback
         exception = traceback.format_exc()
@@ -105,14 +95,14 @@ def do_test(board, K, __expected):
         return 0
 
 def run_tests():
-    sys.stdout.write("ApplesAndPears (1000 Points)\n\n")
+    sys.stdout.write("UniformBoard (300 Points)\n\n")
 
     passed = cases = 0
     case_set = set()
     for arg in sys.argv[1:]:
         case_set.add(int(arg))
 
-    with open("ApplesAndPears.sample", "r") as f:
+    with open("UniformBoard.sample", "r") as f:
         while True:
             label = f.readline()
             if not label.startswith("--"): break
@@ -132,9 +122,9 @@ def run_tests():
 
     sys.stdout.write("\nPassed : %d / %d cases\n" % (passed, cases))
 
-    T = time.time() - 1402384091
+    T = time.time() - 1402381114
     PT, TT = (T / 60.0, 75.0)
-    points = 1000 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
+    points = 300 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT))
     sys.stdout.write("Time   : %d minutes %d secs\n" % (int(T/60), T%60))
     sys.stdout.write("Score  : %.2f points\n" % points)
 
